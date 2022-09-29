@@ -1,0 +1,8 @@
+# build files
+*/dist
+
+# node modules
+**/node_modules/**
+
+# keys/credentials
+*.pem
