@@ -1,0 +1,20 @@
+form>div {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 320px;
+  padding-right: 1em;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  text-align: left;
+}
+
+button {
+  align-self: flex-end;
+}
