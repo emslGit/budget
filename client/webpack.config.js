@@ -41,6 +41,10 @@ const config = {
         test: /\.css$/i,
         use: [stylesHandler, "css-loader"],
       },
+      // {
+      //   test: /\.css$/,
+      //   loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+      // },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: "asset",

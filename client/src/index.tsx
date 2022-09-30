@@ -1,8 +1,9 @@
 import "normalize.css";
+import "./global.css";
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Layout from './components/layout/Layout';
+import Layout from './components/baseLayout/BaseLayout';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(

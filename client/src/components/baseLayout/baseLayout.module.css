@@ -1,0 +1,10 @@
+.baseLayout {
+  padding: 1em;
+  background-color: whitesmoke;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.wrapper {
+  max-width: 1000px;
+}
