@@ -1,4 +1,4 @@
-form>div {
+.financeForm form>div {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
@@ -7,14 +7,14 @@ form>div {
   padding-right: 1em;
 }
 
-table {
+.financeForm table {
   width: 100%;
 }
 
-th {
+.financeForm th {
   text-align: left;
 }
 
-button {
+.financeForm button {
   align-self: flex-end;
 }

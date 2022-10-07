@@ -1,6 +1,6 @@
 .baseLayout {
   padding: 1em;
-  background-color: whitesmoke;
+  background-color: #111;
   box-sizing: border-box;
   min-height: 100vh;
 }

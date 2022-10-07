@@ -40,11 +40,8 @@ const config = {
       {
         test: /\.css$/i,
         use: [stylesHandler, "css-loader"],
+        // options: { sourceMap: true, modules: true, localIdentName: '[name]_[local]_[hash:base64:5]' }
       },
-      // {
-      //   test: /\.css$/,
-      //   loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-      // },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: "asset",

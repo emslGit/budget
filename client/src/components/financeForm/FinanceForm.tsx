@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import {Context} from "../baseLayout/BaseLayout"
-import {Category} from "../Category";
+import {Category} from "../interfaces";
 import styles from './financeForm.module.css';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const FinanceForm: React.FC<Props> = ({header, category, handleAddFunction, handleDeleteFunction}: Props) => {
-  const items = useContext(Context).filter(item => item.category == category);
+  const items = useContext(Context).items.filter(item => item.category == category);
   const nameInput = useRef<HTMLInputElement>(null);
   const amountInput = useRef<HTMLInputElement>(null);
 
@@ -32,6 +32,9 @@ const FinanceForm: React.FC<Props> = ({header, category, handleAddFunction, hand
       Number(amountInput.current.value),
       category
     );
+
+    nameInput.current.value = "";
+    amountInput.current.value = "";
   }
 
   const handleDeleteClick = (key: string) => {
@@ -44,11 +47,11 @@ const FinanceForm: React.FC<Props> = ({header, category, handleAddFunction, hand
       <form className="wrap" onSubmit={(ev) => handleFormSubmit(ev)}>
         <div>
           <label>Name</label>
-          <input ref={nameInput} type="text"></input>
+          <input ref={nameInput} defaultValue="test" type="text"></input>
         </div>
         <div>
           <label>Amount</label>
-          <input ref={amountInput} type="number"></input>
+          <input ref={amountInput} defaultValue="100" type="number"></input>
         </div>
         <button type="submit">Add</button>
       </form>
@@ -73,7 +76,6 @@ const FinanceForm: React.FC<Props> = ({header, category, handleAddFunction, hand
           </tr>
         )}
         </tbody>
-        <hr></hr>
         <tfoot>
           <tr>
             <td colSpan={2}>Total</td>
