@@ -27,20 +27,13 @@ button:hover {
   color: black;
 }
 
-input {
-  background-color: none;
-}
-
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
+input[type=text],
 input[type=number] {
-  -moz-appearance: textfield;
+  width: 8em;
+}
+
+input.yearInput[type=number] {
+  width: 4em;
 }
 
 /** layout classes **/

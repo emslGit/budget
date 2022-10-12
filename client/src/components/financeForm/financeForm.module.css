@@ -1,12 +1,3 @@
-.financeForm form>div {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 320px;
-  padding-right: 1em;
-}
-
 .financeForm table {
   width: 100%;
 }
@@ -17,4 +8,40 @@
 
 .financeForm button {
   align-self: flex-end;
+}
+
+/* Chrome, Safari, Edge, Opera */
+/* .financeForm input::-webkit-outer-spin-button,
+.financeForm input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} */
+
+/* Firefox */
+/* .financeForm input[type=number] {
+  -moz-appearance: textfield;
+} */
+
+.inputGroup,
+.selectGroup {
+  flex: 1;
+}
+
+.inputGroup>input,
+.selectGroup>select,
+.selectGroup>input {
+  margin-left: 0.5em;
+}
+
+.mainOptions,
+.extraOptions {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.extraOptions {
+  margin: 1em 0;
+  padding: 1em;
+  background-color: grey;
 }

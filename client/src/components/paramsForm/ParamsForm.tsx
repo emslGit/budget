@@ -27,7 +27,7 @@ const ParamsForm: React.FC<Props> = ({handleUpdateClick}: Props) => {
         <div>
           <label>{strings.roi}</label>
           <span>
-            <input ref={roiInput} defaultValue="10" type="number"></input>
+            <input ref={roiInput} defaultValue={10} type="number"></input>
             <span>%</span>
           </span>
         </div>

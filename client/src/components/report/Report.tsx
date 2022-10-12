@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import {Context} from "../baseLayout/BaseLayout"
 import { Category } from '../interfaces';
 import styles from './report.module.css';
@@ -27,103 +27,102 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      // text: 'Net Assets',
-    },
-  },
-};
-
-const quartels = ['Jan', 'Apr', 'Jul', 'Oct'];
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const Report: React.FC = () => {
-  const [years, setYears] = useState<string[]>([]);
   const {items, params} = useContext(Context);
-  const quarterlyModifier = (1 + (params.roi - params.inflation) / 100) ** (1/4);
-  const yearInput = useRef<HTMLInputElement>(null);
-  let monthlyIncome = 0;
-  let monthlyExpense = 0;
+  const modifier = (1 + (params.roi - params.inflation) / 100);
+  const today = new Date();
+  const startYear = today.getFullYear();
+  const startMonth = today.getMonth();
+  const [years, setYears] = useState<number[]>([startYear, startYear + 1]);
 
-  // O(n)
-  for (let item of items) {
-    switch (item.category) {
-      case Category.Income:
-        monthlyIncome += item.amount;
-        break;
-      case Category.Expense:
-        monthlyExpense += item.amount;
-        break;
-      default:
-        console.log("Unknown Category");
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+      },
+    },
+    animation: {
+        duration: 0
+    },
+    ticks: {
+      autoSkip: true,
+      maxTicksLimit: years.length,
     }
-  }
+  };
 
-  const quarterlyNet = 3 * (monthlyIncome - monthlyExpense)
-  const totalNet = [];
-  let net = 0;
-
+  let totalNet = 0;
+  const totalNetArr: {[key: string]: number} = {};
+  
   // O(n)
   for (let year of years) {
-    for (let quartel of quartels) {
-      net = Math.floor(quarterlyModifier * (net + quarterlyNet));
+    for (let i = 0; i <= 11; i++) { 
+      if (year == startYear && i < startMonth) {
+        continue;
+      }
+      
+      for (let item of items) {
+        const yearFrom = item.yearFrom || startYear;
+        const yearTo = item.yearTo || years[years.length - 1];
+        const monthFrom = (item.monthFrom || 1) - 1;
+        const monthTo = (item.monthTo || 12) - 1;
 
-      totalNet.push([`${quartel} ${year}`, net]);
+        if (
+          yearFrom <= year &&
+          monthFrom <= i &&
+          yearTo >= year &&
+          monthTo >= i
+        ) {
+          totalNet += ((item.category === Category.Expense) ? -1 : 1) * item.amount;
+          totalNetArr[`${year}-${i}`] = totalNet;          
+        }
+      }
     }
+    totalNet = Math.floor(modifier * totalNet);
   }
 
   const data = {
-    totalNet,
+    totalNetArr,
     datasets: [
       {
         fill: true,
         label: 'Net Assets',
-        data: totalNet,
+        data: totalNetArr,
         borderColor: 'rgb(53, 235, 162)',
         backgroundColor: 'rgba(53, 235, 162, 0.5)',
       },
     ],
   };
 
-  const handleFormSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
-    ev.preventDefault();
+  const handleInputChange = (ev: React.FormEvent<HTMLInputElement>) => {
+    const endYear = Number((ev.target as HTMLInputElement).value);
+    setYears(Array.from({length: endYear - startYear + 1}, (v, k) => startYear + k));
   }
 
   return (
     <div className={`${styles.report} card`}>
       <h2>Report</h2>
-      <form onSubmit={(ev) => handleFormSubmit(ev)}>
+      <form>
         <div>
+          <label>Range</label>
           <span>
-            <input ref={yearInput} type="date"></input>
+            {`${startYear} - `}
+            <input
+              className='yearInput'
+              type="number"
+              min={startYear + 1}
+              max={startYear + 30}
+              defaultValue={startYear + 1}
+              onChange={(ev) => handleInputChange(ev)}
+            />
           </span>
         </div>
-        <hr></hr>
-        <button>Update</button>
       </form>
-      {items.length && <table>
-        <tbody>
-          <tr>
-            <td>Income</td>
-            <td align="right">{monthlyIncome}</td>
-          </tr>
-          <tr>
-            <td>Expenses</td>
-            <td align="right">-{monthlyExpense}</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td>Total</td>
-            <td align="right">{monthlyIncome - monthlyExpense}</td>
-          </tr>
-        </tfoot>
-      </table> || ""}
       <Line options={options} data={data} />
     </div>
   );

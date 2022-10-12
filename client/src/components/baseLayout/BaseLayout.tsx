@@ -1,5 +1,4 @@
 import React, { useState, createContext } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import FinanceForm from '../financeForm/FinanceForm';
 import ParamsForm from '../paramsForm/ParamsForm';
 import Report from '../report/Report';
@@ -26,15 +25,8 @@ const BaseLayout: React.FC = () => {
   const [items, setItems] = useState<IFinanceItem[]>([]);
   const [params, setParams] = useState<IFinanceParams>(initialParams);
   
-  const addItem = (name: string, amount: number, category: Category) => {
-    const newItem: IFinanceItem = {
-      key: uuidv4(),
-      name: name,
-      amount: amount,
-      category: category,
-    };
-
-    setItems([newItem, ...items]);
+  const addItem = (financeItem: IFinanceItem) => {
+    setItems([financeItem, ...items]);
   }
 
   const deleteItem = (key: string) => {
@@ -50,8 +42,7 @@ const BaseLayout: React.FC = () => {
       <div className={`${styles.baseLayout} center`}>
         <div className={styles.wrapper}>
           <h1>Budget</h1>
-          <FinanceForm header="Income" category={Category.Income} handleAddFunction={addItem} handleDeleteFunction={deleteItem}/>
-          <FinanceForm header="Expenses" category={Category.Expense} handleAddFunction={addItem} handleDeleteFunction={deleteItem}/>
+          <FinanceForm header="Stuff" handleAddFunction={addItem} handleDeleteFunction={deleteItem}/>
           <ParamsForm handleUpdateClick={updateParams} />
           <Report />
         </div>
