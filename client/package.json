@@ -48,6 +48,9 @@
   },
   "dependencies": {
     "chart.js": "^3.9.1",
+    "ejs": "^3.1.8",
+    "glob-parent": "^6.0.2",
+    "got": "^12.5.2",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^4.3.1",
