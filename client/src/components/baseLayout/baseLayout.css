@@ -5,6 +5,6 @@
   min-height: 100vh;
 }
 
-.wrapper {
+.baseLayout .wrapper {
   max-width: 1000px;
 }

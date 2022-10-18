@@ -2,8 +2,9 @@ import React, { useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import {Context} from "../baseLayout/BaseLayout"
-import {Category, IFinanceItem} from "../interfaces";
-import styles from './financeForm.module.css';
+import {MONTHS, Category} from '../constants';
+import {IFinanceItem} from "../interfaces";
+import './financeForm.css';
 
 
 interface IProps {
@@ -17,29 +18,13 @@ const defaultFormState: IFinanceItem = {
   name: "test",
   frequency: 1,
   amount: 100,
-  category: Category.Unset,
+  category: Category.Income,
 }
 
 const FREQUENCY = [
   "Weekly",
   "Monthly",
   "Annually",
-]
-
-const MONTHS = [
-  "-",
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
 ]
 
 const FinanceForm: React.FC<IProps> = ({header, handleAddFunction, handleDeleteFunction}: IProps) => {
@@ -62,8 +47,6 @@ const FinanceForm: React.FC<IProps> = ({header, handleAddFunction, handleDeleteF
       return;
     }
 
-    console.log(formState)
-
     handleAddFunction({
       ...formState,
       key: uuidv4(),
@@ -75,15 +58,29 @@ const FinanceForm: React.FC<IProps> = ({header, handleAddFunction, handleDeleteF
   }
 
   return (
-    <div className={`${styles.financeForm} card`}>
+    <div className="financeForm card">
       <h2>{header}</h2>
       <form className="wrap" onSubmit={(ev) => handleFormSubmit(ev)}>
-        <div className={styles.mainOptions}>
-          <div className={styles.inputGroup}>
+        <div className="mainOptions">
+          <div className="inputGroup">
             <label>Name</label>
             <input name="name" type="text" defaultValue={defaultFormState.name} onChange={(e) => handleChange(e)}></input>
           </div>
-          <div className={styles.selectGroup}>
+          <div className="inputGroup">
+            <label>Amount</label>
+            <input name="amount" defaultValue={defaultFormState.amount} type="number" onChange={(e) => handleChange(e)}></input>
+          </div>
+          <div className="selectGroup">
+            <label>Category</label>
+            <select name="category" defaultValue={Category.Income} onChange={(e) => handleChange(e)}>
+              <option value={Category.Income}>Income</option>
+              <option value={Category.Expense}>Expense</option>
+            </select>
+          </div>
+          <button type="submit">Add</button>
+        </div>
+        <div className="extraOptions">
+          <div className="selectGroup">
             <label>Frequency</label>
             <select name="frequency" defaultValue={defaultFormState.frequency} onChange={(e) => handleChange(e)}>
               <option value={0}>Weekly</option>
@@ -91,41 +88,25 @@ const FinanceForm: React.FC<IProps> = ({header, handleAddFunction, handleDeleteF
               <option value={2}>Annually</option>
             </select>
           </div>
-          <div className={styles.inputGroup}>
-            <label>Amount</label>
-            <input name="amount" defaultValue={defaultFormState.amount} type="number" onChange={(e) => handleChange(e)}></input>
-          </div>
-          <div className={styles.selectGroup}>
-            <label>Category</label>
-            <select name="category" onChange={(e) => handleChange(e)}>
-              <option value={Category.Income}>Income</option>
-              <option value={Category.Expense}>Expense</option>
-            </select>
-          </div>
-          <button type="submit">Add</button>
-        </div>
-        <div className={styles.extraOptions}>
-          <div className={styles.inputGroup}>
-            <label>Label</label>
-            <input name="label" type="text" defaultValue={defaultFormState.label} onChange={(e) => handleChange(e)}></input>
-          </div>
-          <div className={styles.selectGroup}>
+          <div className="selectGroup">
             <label>From</label>
+            <input name="yearFrom" type="number" className="yearInput" onChange={(e) => handleChange(e)}></input>
             <select name="monthFrom" onChange={(e) => handleChange(e)}>
               {MONTHS.map((month, i) => 
                 <option key={i} value={i}>{month}</option>
-              )}
+              )}  
             </select>
-            <input name="yearFrom" type="number" className="yearInput" onChange={(e) => handleChange(e)}></input>
-          </div>
-          <div className={styles.selectGroup}>
-            <label>To</label>
+            <label>to</label>
+            <input name="yearTo" type="number" className="yearInput" onChange={(e) => handleChange(e)}></input>
             <select name="monthTo" onChange={(e) => handleChange(e)}>
               {MONTHS.map((month, i) => 
                 <option key={i} value={i}>{month}</option>
               )}
             </select>
-            <input name="yearTo" type="number" className="yearInput" onChange={(e) => handleChange(e)}></input>
+          </div>
+          <div className="inputGroup">
+            <label>Label</label>
+            <input name="label" type="text" defaultValue={defaultFormState.label} onChange={(e) => handleChange(e)}></input>
           </div>
         </div>
       </form>
@@ -147,8 +128,8 @@ const FinanceForm: React.FC<IProps> = ({header, handleAddFunction, handleDeleteF
             <td>{item.name}</td>
             <td>{FREQUENCY[item.frequency]}</td>
             <td>{item.category === Category.Expense ? "\u2212" : "\u002B"} {item.amount}</td>
-            <td>{item.monthTo && MONTHS[item.monthTo]} {item.yearFrom}</td>
-            <td>{item.monthFrom && MONTHS[item.monthFrom]} {item.yearTo}</td>
+            <td>{item.monthFrom && MONTHS[item.monthFrom]} {item.yearFrom}</td>
+            <td>{item.monthTo && MONTHS[item.monthTo]} {item.yearTo}</td>
             <td>{item.label}</td>
             <td align="right">
               <button onClick={() => handleDeleteClick(item.key)}>X</button>

@@ -1,131 +1,99 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
-import {Context} from "../baseLayout/BaseLayout"
-import { Category } from '../interfaces';
-import styles from './report.module.css';
-import { Line } from 'react-chartjs-2';
+import React, { useState } from "react";
+import { MONTHS } from "../constants";
+import { IFinanceItem, IFinanceParams, ITimeSeries } from "../interfaces";
+import TimeSeriesChart from "../timeSeriesChart/timeSeriesChart";
+import "./report.css";
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Filler,
-  Legend,
-} from 'chart.js';
+interface IProps {
+  items: IFinanceItem[];
+  params: IFinanceParams;
+}
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Filler,
-  Legend
-);
-
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-const Report: React.FC = () => {
-  const {items, params} = useContext(Context);
-  const modifier = (1 + (params.roi - params.inflation) / 100);
+export const dataAsTimeSeries = (
+  items: IFinanceItem[],
+  annualModifier: number,
+  endYear: number
+): ITimeSeries => {
   const today = new Date();
-  const startYear = today.getFullYear();
-  const startMonth = today.getMonth();
-  const [years, setYears] = useState<number[]>([startYear, startYear + 1]);
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-      },
-    },
-    animation: {
-        duration: 0
-    },
-    ticks: {
-      autoSkip: true,
-      maxTicksLimit: years.length,
-    }
-  };
-
+  const todayYear = today.getFullYear();
+  const todayMonth = today.getMonth();
+  const totalNetArr: ITimeSeries = {};
   let totalNet = 0;
-  const totalNetArr: {[key: string]: number} = {};
-  
-  // O(n)
-  for (let year of years) {
-    for (let i = 0; i <= 11; i++) { 
-      if (year == startYear && i < startMonth) {
+
+  for (let i = todayYear; i <= endYear; i++) {
+    for (let j = 0; j <= 11; j++) {
+      if (i == todayYear && j < todayMonth) {
         continue;
       }
-      
+
       for (let item of items) {
-        const yearFrom = item.yearFrom || startYear;
-        const yearTo = item.yearTo || years[years.length - 1];
-        const monthFrom = (item.monthFrom || 1) - 1;
+        // TODO: assign these at add time
+        const frequency = item.frequency;
+        const yearFrom = item.yearFrom || todayYear;
+        const yearTo = item.yearTo || endYear;
+        const monthFrom = (item.monthFrom || todayMonth) - 1;
         const monthTo = (item.monthTo || 12) - 1;
 
+        // only if item within time range, and only run annual once a year
         if (
-          yearFrom <= year &&
-          monthFrom <= i &&
-          yearTo >= year &&
-          monthTo >= i
+          (yearFrom > i && yearTo < i) ||
+          (frequency == 2 && j != monthFrom) ||
+          (yearFrom == i && yearTo == i && (monthFrom > j || monthTo < j))
         ) {
-          totalNet += ((item.category === Category.Expense) ? -1 : 1) * item.amount;
-          totalNetArr[`${year}-${i}`] = totalNet;          
+          continue;
         }
+
+        totalNet += item.category * item.amount * (frequency == 0 ? 4 : 1);
       }
+
+      totalNetArr[`${MONTHS[j + 1]} ${i}`] = Math.round(totalNet);
     }
-    totalNet = Math.floor(modifier * totalNet);
+
+    totalNet *= annualModifier;
   }
 
-  const data = {
-    totalNetArr,
-    datasets: [
-      {
-        fill: true,
-        label: 'Net Assets',
-        data: totalNetArr,
-        borderColor: 'rgb(53, 235, 162)',
-        backgroundColor: 'rgba(53, 235, 162, 0.5)',
-      },
-    ],
-  };
+  return totalNetArr;
+};
+
+const Report: React.FC<IProps> = ({ items, params }: IProps) => {
+  const annualModifier = 1 + (params.roi - params.inflation) / 100;
+  const today = new Date();
+  const todayYear = today.getFullYear();
+  const [endYear, setEndYear] = useState<number>(todayYear + 2);
 
   const handleInputChange = (ev: React.FormEvent<HTMLInputElement>) => {
-    const endYear = Number((ev.target as HTMLInputElement).value);
-    setYears(Array.from({length: endYear - startYear + 1}, (v, k) => startYear + k));
-  }
+    const _endYear = Number((ev.target as HTMLInputElement).value);
+    setEndYear(_endYear);
+  };
+
+  console.log(items);
 
   return (
-    <div className={`${styles.report} card`}>
+    <div className={`report card`}>
       <h2>Report</h2>
       <form>
         <div>
           <label>Range</label>
           <span>
-            {`${startYear} - `}
+            {`${today.getFullYear()} - `}
             <input
-              className='yearInput'
+              className="yearInput"
               type="number"
-              min={startYear + 1}
-              max={startYear + 30}
-              defaultValue={startYear + 1}
+              min={todayYear + 1}
+              max={todayYear + 30}
+              defaultValue={endYear}
               onChange={(ev) => handleInputChange(ev)}
             />
           </span>
         </div>
       </form>
-      <Line options={options} data={data} />
+      <TimeSeriesChart
+        series={dataAsTimeSeries(items, annualModifier, endYear)}
+        startYear={todayYear}
+        endYear={endYear}
+      />
     </div>
   );
-}
+};
 
 export default Report;
