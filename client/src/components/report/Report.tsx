@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { MONTHS } from "../constants";
-import { IFinanceItem, IFinanceParams, ITimeSeries } from "../interfaces";
+import { Frequency, MONTHS } from "../../utils/constants";
+import { IFinanceItem, IFinanceParams, ITimeSeries } from "../../utils/interfaces";
 import TimeSeriesChart from "../timeSeriesChart/timeSeriesChart";
 import "./report.css";
 
@@ -12,9 +12,9 @@ interface IProps {
 export const dataAsTimeSeries = (
   items: IFinanceItem[],
   annualModifier: number,
+  today: Date,
   endYear: number
 ): ITimeSeries => {
-  const today = new Date();
   const todayYear = today.getFullYear();
   const todayMonth = today.getMonth();
   const totalNetArr: ITimeSeries = {};
@@ -33,17 +33,16 @@ export const dataAsTimeSeries = (
         const yearTo = item.yearTo || endYear;
         const monthFrom = (item.monthFrom || todayMonth) - 1;
         const monthTo = (item.monthTo || 12) - 1;
+        const current = i * 100 + j;
 
         // only if item within time range, and only run annual once a year
         if (
-          (yearFrom > i && yearTo < i) ||
-          (frequency == 2 && j != monthFrom) ||
-          (yearFrom == i && yearTo == i && (monthFrom > j || monthTo < j))
+          current >= (yearFrom * 100 + monthFrom) &&
+          current <= (yearTo * 100 + monthTo) &&
+          (frequency == Frequency.Annually ? j == monthFrom : true)
         ) {
-          continue;
+          totalNet += item.category * item.amount * (frequency == 0 ? 4 : 1);
         }
-
-        totalNet += item.category * item.amount * (frequency == 0 ? 4 : 1);
       }
 
       totalNetArr[`${MONTHS[j + 1]} ${i}`] = Math.round(totalNet);
@@ -66,8 +65,6 @@ const Report: React.FC<IProps> = ({ items, params }: IProps) => {
     setEndYear(_endYear);
   };
 
-  console.log(items);
-
   return (
     <div className={`report card`}>
       <h2>Report</h2>
@@ -88,7 +85,7 @@ const Report: React.FC<IProps> = ({ items, params }: IProps) => {
         </div>
       </form>
       <TimeSeriesChart
-        series={dataAsTimeSeries(items, annualModifier, endYear)}
+        series={dataAsTimeSeries(items, annualModifier, today, endYear)}
         startYear={todayYear}
         endYear={endYear}
       />

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { strings } from '../../utils/strings';
-import { IFinanceParams } from '../interfaces';
+import { IFinanceParams } from '../../utils/interfaces';
 import './paramsForm.css';
 
 interface Props {

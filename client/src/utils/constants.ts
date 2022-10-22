@@ -3,6 +3,12 @@ export enum Category {
   Expense = -1,
 }
 
+export enum Frequency {
+  Weekly = 0,
+  Monthly = 1,
+  Annually = 2,
+}
+
 export const MONTHS = [
   "-",
   "Jan",

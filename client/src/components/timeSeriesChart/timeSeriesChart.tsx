@@ -1,5 +1,5 @@
 import React from 'react';
-import { ITimeSeries } from '../interfaces';
+import { ITimeSeries } from '../../utils/interfaces';
 import { Line } from 'react-chartjs-2';
 import { ChartOptions } from 'chart.js';
 import './timeSeries.css';

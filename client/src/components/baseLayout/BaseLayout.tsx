@@ -2,7 +2,7 @@ import React, { useState, createContext } from 'react';
 import FinanceForm from '../financeForm/FinanceForm';
 import ParamsForm from '../paramsForm/ParamsForm';
 import Report from '../report/Report';
-import { IFinanceItem, IFinanceParams } from '../interfaces';
+import { IFinanceItem, IFinanceParams } from '../../utils/interfaces';
 import './baseLayout.css';
 
 interface ICtx {
