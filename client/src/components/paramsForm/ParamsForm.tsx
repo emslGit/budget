@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { strings } from '../../utils/strings';
-import { IFinanceParams } from '../interfaces';
-import styles from './paramsForm.module.css';
+import { IFinanceParams } from '../../utils/interfaces';
+import './paramsForm.css';
 
 interface Props {
   handleUpdateClick(params: IFinanceParams): void;
@@ -21,20 +21,20 @@ const ParamsForm: React.FC<Props> = ({handleUpdateClick}: Props) => {
   }
 
   return (
-    <div className={`${styles.paramsForm} card`}>
+    <div className={`paramsForm card`}>
       <h2>Parameters</h2>
       <form onSubmit={(ev) => handleFormSubmit(ev)}>
         <div>
           <label>{strings.roi}</label>
           <span>
-            <input ref={roiInput} defaultValue={10} type="number"></input>
+            <input ref={roiInput} defaultValue={12} type="number"></input>
             <span>%</span>
           </span>
         </div>
         <div>
           <label>{strings.inflation}</label>
           <span>
-            <input ref={inflationInput} type="number"></input>
+            <input ref={inflationInput} defaultValue={2} type="number"></input>
             <span>%</span>
           </span>
         </div>

@@ -1,8 +1,4 @@
-export enum Category {
-  Income = 1,
-  Unset = 0,
-  Expense = -1,
-}
+import { Category } from "./constants";
 
 export interface IFinanceItem {
   key: string;
@@ -20,3 +16,7 @@ export interface IFinanceItem {
 export interface IFinanceParams {
   [param: string]: number;
 }
+
+export interface ITimeSeries {
+  [key: string]: number
+};

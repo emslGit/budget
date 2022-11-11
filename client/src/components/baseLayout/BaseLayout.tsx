@@ -2,8 +2,8 @@ import React, { useState, createContext } from 'react';
 import FinanceForm from '../financeForm/FinanceForm';
 import ParamsForm from '../paramsForm/ParamsForm';
 import Report from '../report/Report';
-import styles from './baseLayout.module.css';
-import { IFinanceItem, IFinanceParams, Category } from '../interfaces';
+import { IFinanceItem, IFinanceParams } from '../../utils/interfaces';
+import './baseLayout.css';
 
 interface ICtx {
   items: IFinanceItem[];
@@ -11,9 +11,9 @@ interface ICtx {
 }
 
 const initialParams = {
-  roi: 0,
+  roi: 12,
   salaryIncrease: 0,
-  inflation: 0,
+  inflation: 2,
 }
 
 export const Context = createContext<ICtx>({
@@ -39,12 +39,12 @@ const BaseLayout: React.FC = () => {
 
   return (
     <Context.Provider value={{items: items, params: params}}>
-      <div className={`${styles.baseLayout} center`}>
-        <div className={styles.wrapper}>
+      <div className="baseLayout center">
+        <div className="wrapper">
           <h1>Budget</h1>
           <FinanceForm header="Stuff" handleAddFunction={addItem} handleDeleteFunction={deleteItem}/>
           <ParamsForm handleUpdateClick={updateParams} />
-          <Report />
+          <Report items={items} params={params} />
         </div>
       </div>
     </Context.Provider>
