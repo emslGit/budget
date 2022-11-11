@@ -172,13 +172,6 @@ it("correct result with annual frequencies", () => {
 });
 
 // System tests
-it("cannot select months without selecting years", () => {});
+it("cannot select months without selecting years", () => { });
 
-it("cannot select years without selecting months", () => {});
-
-// it('renders learn   react link', () => {
-//   const {debug, getByTestId} = render(<Report items={sampleItems} params={sampleParams}/>);
-//   // const linkElement = screen.getByText(/learn react/i);
-//   // expect(linkElement).toBeInTheDocument();
-//   debug()
-// );
+it("cannot select years without selecting months", () => { });
