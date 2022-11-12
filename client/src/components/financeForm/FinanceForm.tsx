@@ -1,8 +1,15 @@
 import React, { useContext, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { v4 as uuidv4 } from 'uuid';
 
+import Delete from '@mui/icons-material/Delete';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {MobileDatePicker} from '@mui/x-date-pickers/MobileDatePicker';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -19,18 +26,9 @@ import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import Delete from '@mui/icons-material/Delete';
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {MobileDatePicker} from '@mui/x-date-pickers/MobileDatePicker';
-
-import dayjs, { Dayjs } from 'dayjs';
-import { v4 as uuidv4 } from 'uuid';
-
 import {Context} from "../baseLayout/BaseLayout"
 import {FREQUENCY, Frequency, Category} from '../../utils/constants';
 import {IFinanceItem} from "../../utils/interfaces";
-
 
 interface IProps {
   handleAddFunction(financeItem: IFinanceItem): void;
@@ -93,6 +91,11 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
         label="Amount"
         variant="outlined"
         defaultValue={defaultFinanceItem.amount}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">$</InputAdornment>
+          ),
+        }}
         onChange={(e) => setAmount(parseInt(e.target.value))}
       />
       <ToggleButtonGroup
@@ -114,6 +117,7 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
           defaultValue={defaultFinanceItem.frequency}
           onChange={(e) => setFrequency(e.target.value as number)}
         >
+          <MenuItem value={Frequency.Once}>Once</MenuItem>
           <MenuItem value={Frequency.Weekly}>Weekly</MenuItem>
           <MenuItem value={Frequency.Monthly}>Monthly</MenuItem>
           <MenuItem value={Frequency.Annually}>Annually</MenuItem>
@@ -144,6 +148,7 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
       <Button variant="contained" onClick={() => handleSubmit()}>
         Add
       </Button>
+      {/* TODO: abstract table */}
       {items.length && <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
@@ -176,6 +181,7 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
             <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 }}}>
               <TableCell colSpan={4}>Net Annual Change</TableCell>
               <TableCell>
+                {/* TODO: abstract acc */}
                 {items.reduce((sum, item) => {
                   const multiplied = (item.category === Category.Expense ? -1 : 1) * item.amount;
                   switch(item.frequency) {

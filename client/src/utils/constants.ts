@@ -3,7 +3,9 @@ export enum Category {
   Expense = -1,
 }
 
+// TODO: fix once
 export enum Frequency {
+  Once = 4,
   Weekly = 0,
   Monthly = 1,
   Annually = 2,

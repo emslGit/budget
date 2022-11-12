@@ -2,7 +2,6 @@ import React from 'react';
 import { ITimeSeries } from '../../utils/interfaces';
 import { Line } from 'react-chartjs-2';
 import { ChartOptions } from 'chart.js';
-import './timeSeries.css';
 
 import {
   Chart as ChartJS,
@@ -52,10 +51,10 @@ const TimeSeriesChart: React.FC<IProps> = ({series, startYear, endYear}: IProps)
       x: {
         ticks: {
           autoSkip: false,
-          callback(val: string | number, index: number): string {
-            const label = this.getLabelForValue(Number(val));
-            return label.includes("Jan") ? label : '';
-          },
+          // callback(val: string | number, index: number): string {
+          //   const label = this.getLabelForValue(Number(val));
+          //   return label.includes("Jan") ? label : '';
+          // },
         }
       }
     }

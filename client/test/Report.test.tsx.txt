@@ -1,0 +1,7 @@
+import React from "react";
+import { render, screen } from "@testing-library/react";
+
+// System tests
+it("cannot select months without selecting years", () => { });
+
+it("cannot select years without selecting months", () => { });

@@ -1,10 +1,7 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
 import dayjs from "dayjs";
-import Report, { dataAsTimeSeries } from "../src/components/report/Report";
+import dataAsTimeSeries from "../src/utils/dataAsTimeSeries";
 import { v4 as uuidv4 } from "uuid";
 import { Frequency, Category } from "../src/utils/constants";
-
 
 it("selecting no years or months equates to selecting them all", () => {
   const expected = { "Dec 2024": 2883 };
@@ -166,8 +163,3 @@ it("correct result with annual frequencies", () => {
   expect(Object.keys(res).length).toEqual(39);
   expect(res["Dec 2025"]).toEqual(expected["Dec 2025"]);
 });
-
-// System tests
-it("cannot select months without selecting years", () => { });
-
-it("cannot select years without selecting months", () => { });

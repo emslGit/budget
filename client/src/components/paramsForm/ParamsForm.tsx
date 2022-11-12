@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-
 import Button from '@mui/material/Button';
+import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-
 import { IFinanceParams } from '../../utils/interfaces';
-import './paramsForm.css';
 
 interface Props {
   handleUpdateClick(params: IFinanceParams): void;
@@ -25,6 +23,7 @@ const ParamsForm: React.FC<Props> = ({handleUpdateClick}: Props) => {
     });
   }
 
+  // TODO: validate number inputs (all forms, 3 files)
   return (
     <Stack className="paramsForm card" spacing={3}>
       <h3>Parameters</h3>
@@ -35,6 +34,11 @@ const ParamsForm: React.FC<Props> = ({handleUpdateClick}: Props) => {
           label="Roi"
           variant="outlined"
           defaultValue={roi}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">%</InputAdornment>
+            ),
+          }}
           onChange={(e) => setRoi(parseInt(e.target.value))}
         />
         <TextField
@@ -43,6 +47,11 @@ const ParamsForm: React.FC<Props> = ({handleUpdateClick}: Props) => {
           label="Inflation"
           variant="outlined"
           defaultValue={inflation}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">%</InputAdornment>
+            ),
+          }}
           onChange={(e) => setInflation(parseInt(e.target.value))}
         />
       </Stack>
