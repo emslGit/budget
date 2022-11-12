@@ -1,25 +1,35 @@
 import React, { useContext, useState } from 'react';
-import {FormControl, TableFooter, TextField, InputLabel, Select, MenuItem, Button, Stack, ToggleButton, ToggleButtonGroup, IconButton} from '@mui/material';
+
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
+import TableFooter from '@mui/material/TableFooter';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import { Add, Delete } from '@mui/icons-material';
-import { v4 as uuidv4 } from 'uuid';
+import Delete from '@mui/icons-material/Delete';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {MobileDatePicker} from '@mui/x-date-pickers/MobileDatePicker';
 
 import dayjs, { Dayjs } from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { v4 as uuidv4 } from 'uuid';
 
 import {Context} from "../baseLayout/BaseLayout"
-import {FREQUENCY, MONTHS, Frequency, Category} from '../../utils/constants';
+import {FREQUENCY, Frequency, Category} from '../../utils/constants';
 import {IFinanceItem} from "../../utils/interfaces";
-import './financeForm.css';
 
 
 interface IProps {
@@ -71,8 +81,20 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
   return (
     <Stack className="financeForm card" spacing={3}>
       <h3>Add Income or Expense</h3>
-      <TextField id="name-input" label="Name" variant="outlined" defaultValue={defaultFinanceItem.itemName} onChange={(e) => setItemName(e.target.value)}/>
-      <TextField id="amount-input" label="Amount" variant="outlined" defaultValue={defaultFinanceItem.amount} onChange={(e) => setAmount(parseInt(e.target.value))}/>
+      <TextField
+        id="name-input"
+        label="Name"
+        variant="outlined"
+        defaultValue={defaultFinanceItem.itemName}
+        onChange={(e) => setItemName(e.target.value)}
+      />
+      <TextField
+        id="amount-input"
+        label="Amount"
+        variant="outlined"
+        defaultValue={defaultFinanceItem.amount}
+        onChange={(e) => setAmount(parseInt(e.target.value))}
+      />
       <ToggleButtonGroup
         fullWidth
         color="primary"
@@ -120,7 +142,7 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
         </LocalizationProvider>
       </Stack>
       <Button variant="contained" onClick={() => handleSubmit()}>
-        <Add />
+        Add
       </Button>
       {items.length && <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">

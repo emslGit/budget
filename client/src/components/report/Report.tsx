@@ -34,10 +34,6 @@ export const dataAsTimeSeries = (
         const monthTo = item.dateTo ? item.dateTo.month() : 11;
         const current = i * 100 + j;
 
-        if (item.category === Category.Expense) {
-          console.log("e")
-        }
-
         // only if item within time range, and only run annual once a year
         if (
           current >= (yearFrom * 100 + monthFrom) &&
@@ -48,7 +44,7 @@ export const dataAsTimeSeries = (
         }
       }
 
-      totalNetArr[`${MONTHS[j + 1]} ${i}`] = Math.round(totalNet);
+      totalNetArr[`${MONTHS[j]} ${i}`] = Math.round(totalNet);
     }
 
     totalNet *= annualModifier;

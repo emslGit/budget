@@ -10,7 +10,6 @@ export enum Frequency {
 }
 
 export const MONTHS = [
-  "-",
   "Jan",
   "Feb",
   "Mar",

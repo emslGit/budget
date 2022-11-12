@@ -1,9 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import Report, { dataAsTimeSeries } from "../src/components/report/Report";
 import { v4 as uuidv4 } from "uuid";
 import { Frequency, Category } from "../src/utils/constants";
+
 
 it("selecting no years or months equates to selecting them all", () => {
   const expected = { "Dec 2024": 2883 };
@@ -32,6 +33,7 @@ it("selecting no years or months equates to selecting them all", () => {
       dateTo: null,
     },
   ];
+
   const resNone = dataAsTimeSeries(inputNone, annualModifier, today, endYear);
   const resAll = dataAsTimeSeries(inputAll, annualModifier, today, endYear);
   expect(Object.keys(resNone).length).toEqual(27);
@@ -80,7 +82,6 @@ it("correct result with one year selected", () => {
 
   const res = dataAsTimeSeries(input, annualModifier, today, endYear);
   expect(Object.keys(res).length).toEqual(27);
-  console.log(res)
   expect(res["Dec 2024"]).toEqual(expected["Dec 2024"]);
 });
 
@@ -132,7 +133,6 @@ it("correct result with both income and expense", () => {
 
   const res = dataAsTimeSeries(input, annualModifier, today, endYear);
   expect(Object.keys(res).length).toEqual(27);
-  console.log(res)
   expect(res["Dec 2024"]).toEqual(expected["Dec 2024"]);
 });
 
