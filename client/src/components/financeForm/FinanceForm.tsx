@@ -3,6 +3,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 
 import Delete from '@mui/icons-material/Delete';
+import Edit from '@mui/icons-material/Edit';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {MobileDatePicker} from '@mui/x-date-pickers/MobileDatePicker';
@@ -33,6 +34,7 @@ import {IFinanceItem} from "../../utils/interfaces";
 interface IProps {
   handleAddFunction(financeItem: IFinanceItem): void;
   handleDeleteFunction(key: string): void;
+  handleEditFunction(key: string): void;
 }
 
 const defaultFinanceItem: IFinanceItem = {
@@ -45,7 +47,7 @@ const defaultFinanceItem: IFinanceItem = {
   dateTo: null,
 }
 
-const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}: IProps) => {
+const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction, handleEditFunction}: IProps) => {
   const {items} = useContext(Context);
   const [itemName, setItemName] = useState<string>(defaultFinanceItem.itemName);
   const [amount, setAmount] = useState<number>(defaultFinanceItem.amount);
@@ -74,6 +76,10 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
 
   const handleDeleteClick = (key: string) => {
     handleDeleteFunction(key);
+  }
+
+  const handleEditClick = (key: string) => {
+    handleEditFunction(key);
   }
 
   return (
@@ -170,6 +176,9 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
                 <TableCell>{item.dateTo?.format('MMM YYYY') || ""}</TableCell>
                 <TableCell>{item.category * item.amount}</TableCell>
                 <TableCell align="right">
+                  <IconButton onClick={() => handleEditClick(item.key)}>
+                    <Edit />
+                  </IconButton>
                   <IconButton onClick={() => handleDeleteClick(item.key)}>
                     <Delete />
                   </IconButton>

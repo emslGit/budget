@@ -33,6 +33,10 @@ const BaseLayout: React.FC = () => {
     setItems(items.filter(item => item.key != key));
   }
 
+  const editItem = (key: string) => {
+    setItems(items);
+  }
+
   const updateParams = (params: IFinanceParams) => {
     setParams(params);
   }
@@ -41,7 +45,11 @@ const BaseLayout: React.FC = () => {
     <Context.Provider value={{items: items, params: params}}>
       <main className="baseLayout center">
         <div className="wrapper">
-          <FinanceForm handleAddFunction={addItem} handleDeleteFunction={deleteItem}/>
+          <FinanceForm
+            handleAddFunction={addItem}
+            handleDeleteFunction={deleteItem}
+            handleEditFunction={editItem}
+          />
           <ParamsForm handleUpdateClick={updateParams} />
           <Report items={items} params={params} />
         </div>
