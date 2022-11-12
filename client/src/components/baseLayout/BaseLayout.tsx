@@ -39,14 +39,13 @@ const BaseLayout: React.FC = () => {
 
   return (
     <Context.Provider value={{items: items, params: params}}>
-      <div className="baseLayout center">
+      <main className="baseLayout center">
         <div className="wrapper">
-          <h1>Budget</h1>
-          <FinanceForm header="Stuff" handleAddFunction={addItem} handleDeleteFunction={deleteItem}/>
+          <FinanceForm handleAddFunction={addItem} handleDeleteFunction={deleteItem}/>
           <ParamsForm handleUpdateClick={updateParams} />
           <Report items={items} params={params} />
         </div>
-      </div>
+      </main>
     </Context.Provider>
   );
 }

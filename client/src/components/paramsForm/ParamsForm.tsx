@@ -21,8 +21,8 @@ const ParamsForm: React.FC<Props> = ({handleUpdateClick}: Props) => {
   }
 
   return (
-    <div className={`paramsForm card`}>
-      <h2>Parameters</h2>
+    <div className="paramsForm card">
+      <h4>Parameters</h4>
       <form onSubmit={(ev) => handleFormSubmit(ev)}>
         <div>
           <label>{strings.roi}</label>
@@ -39,7 +39,7 @@ const ParamsForm: React.FC<Props> = ({handleUpdateClick}: Props) => {
           </span>
         </div>
         <hr></hr>
-        <button>Update</button>
+        <button className="btn-small">Update</button>
       </form>
     </div>
   );

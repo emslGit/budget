@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Frequency, MONTHS } from "../../utils/constants";
+import dayjs, {Dayjs} from 'dayjs';
+import { Category, Frequency, MONTHS } from "../../utils/constants";
 import { IFinanceItem, IFinanceParams, ITimeSeries } from "../../utils/interfaces";
 import TimeSeriesChart from "../timeSeriesChart/timeSeriesChart";
 import "./report.css";
@@ -12,28 +13,30 @@ interface IProps {
 export const dataAsTimeSeries = (
   items: IFinanceItem[],
   annualModifier: number,
-  today: Date,
+  today: Dayjs,
   endYear: number
 ): ITimeSeries => {
-  const todayYear = today.getFullYear();
-  const todayMonth = today.getMonth();
   const totalNetArr: ITimeSeries = {};
   let totalNet = 0;
 
-  for (let i = todayYear; i <= endYear; i++) {
+  for (let i = today.year(); i <= endYear; i++) {
     for (let j = 0; j <= 11; j++) {
-      if (i == todayYear && j < todayMonth) {
+      if (i == today.year() && j < today.month()) {
         continue;
       }
 
       for (let item of items) {
         // TODO: assign these at add time
         const frequency = item.frequency;
-        const yearFrom = item.yearFrom || todayYear;
-        const yearTo = item.yearTo || endYear;
-        const monthFrom = (item.monthFrom || todayMonth) - 1;
-        const monthTo = (item.monthTo || 12) - 1;
+        const yearFrom = item.dateFrom?.year() || today.year();
+        const yearTo = item.dateTo?.year() || endYear;
+        const monthFrom = item.dateFrom ? item.dateFrom.month() : today.month();
+        const monthTo = item.dateTo ? item.dateTo.month() : 11;
         const current = i * 100 + j;
+
+        if (item.category === Category.Expense) {
+          console.log("e")
+        }
 
         // only if item within time range, and only run annual once a year
         if (
@@ -41,7 +44,7 @@ export const dataAsTimeSeries = (
           current <= (yearTo * 100 + monthTo) &&
           (frequency == Frequency.Annually ? j == monthFrom : true)
         ) {
-          totalNet += item.category * item.amount * (frequency == 0 ? 4 : 1);
+          totalNet += item.category * item.amount * (frequency === Frequency.Weekly ? 4 : 1);
         }
       }
 
@@ -56,8 +59,8 @@ export const dataAsTimeSeries = (
 
 const Report: React.FC<IProps> = ({ items, params }: IProps) => {
   const annualModifier = 1 + (params.roi - params.inflation) / 100;
-  const today = new Date();
-  const todayYear = today.getFullYear();
+  const today = dayjs();
+  const todayYear = today.year();
   const [endYear, setEndYear] = useState<number>(todayYear + 2);
 
   const handleInputChange = (ev: React.FormEvent<HTMLInputElement>) => {
@@ -67,12 +70,12 @@ const Report: React.FC<IProps> = ({ items, params }: IProps) => {
 
   return (
     <div className={`report card`}>
-      <h2>Report</h2>
+      <h4>Report</h4>
       <form>
         <div>
           <label>Range</label>
           <span>
-            {`${today.getFullYear()} - `}
+            {`${today.year()} - `}
             <input
               className="yearInput"
               type="number"

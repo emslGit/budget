@@ -1,16 +1,14 @@
-import { Category } from "./constants";
+import { Dayjs } from "dayjs";
+import { Category, Frequency } from "./constants";
 
 export interface IFinanceItem {
   key: string;
-  name: string;
+  itemName: string;
   amount: number;
-  label?: string;
-  frequency: number,
-  monthFrom?: number,
-  yearFrom?: number,
-  monthTo?: number,
-  yearTo?: number,
   category: Category;
+  frequency: Frequency,
+  dateFrom: Dayjs | null,
+  dateTo: Dayjs | null,
 }
 
 export interface IFinanceParams {
