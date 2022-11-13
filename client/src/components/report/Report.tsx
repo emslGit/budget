@@ -15,7 +15,7 @@ interface IProps {
 const Report: React.FC<IProps> = ({ items, params }: IProps) => {
   const annualModifier = 1 + (params.roi - params.inflation) / 100;
   const today = dayjs();
-  const [endYear, setEndYear] = useState<number>(today.year() + 5);
+  const [endYear, setEndYear] = useState<number>(today.year() + 10);
 
   const yearsOnly = (timeSeries: ITimeSeries): ITimeSeries => {
     let _timeSeries: ITimeSeries = {};

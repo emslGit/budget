@@ -8,13 +8,17 @@ import reportWebVitals from './reportWebVitals';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { primaryColor, secondaryColor } from "./utils/colors";
 
 // TODO: move to baselayout? also rename baselayout?
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: 'rgb(50, 205, 50)'
+      main: primaryColor,
+    },
+    secondary: {
+      main: secondaryColor,
     }
   },
 },);

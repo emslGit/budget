@@ -1,10 +1,10 @@
-export enum Category {
+export const enum Category {
   Income = 1,
   Expense = -1,
 }
 
 // TODO: fix once
-export enum Frequency {
+export const enum Frequency {
   Once = 4,
   Weekly = 0,
   Monthly = 1,

@@ -9,8 +9,6 @@ h3 {
 /** layout classes **/
 .card {
   padding: 1em;
-  margin: 1em auto;
   border-radius: 3px;
-  min-width: 720px;
   background-color: #161616;
 }

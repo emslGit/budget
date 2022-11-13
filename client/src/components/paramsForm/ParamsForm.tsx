@@ -30,6 +30,7 @@ const ParamsForm: React.FC<Props> = ({handleUpdateClick}: Props) => {
       <Stack direction="row" spacing={2}>
         <TextField
           fullWidth
+          size="small"
           id="roi-input"
           label="Roi"
           variant="outlined"
@@ -43,6 +44,7 @@ const ParamsForm: React.FC<Props> = ({handleUpdateClick}: Props) => {
         />
         <TextField
           fullWidth
+          size="small"
           id="inflation-input"
           label="Inflation"
           variant="outlined"

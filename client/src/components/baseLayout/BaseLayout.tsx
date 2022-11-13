@@ -4,6 +4,8 @@ import ParamsForm from '../paramsForm/ParamsForm';
 import Report from '../report/Report';
 import { IFinanceItem, IFinanceParams } from '../../utils/interfaces';
 import './baseLayout.css';
+import FinanceTable from '../financeTable/FinanceTable';
+import { Stack } from '@mui/system';
 
 interface ICtx {
   items: IFinanceItem[];
@@ -44,15 +46,16 @@ const BaseLayout: React.FC = () => {
   return (
     <Context.Provider value={{items: items, params: params}}>
       <main className="baseLayout center">
-        <div className="wrapper">
-          <FinanceForm
-            handleAddFunction={addItem}
-            handleDeleteFunction={deleteItem}
-            handleEditFunction={editItem}
-          />
-          <ParamsForm handleUpdateClick={updateParams} />
-          <Report items={items} params={params} />
-        </div>
+        <Stack direction="row" spacing={2}>
+          <Stack sx={{width: 1000}} className="leftColumn">
+            <Report items={items} params={params} />
+            <FinanceTable handleDeleteFunction={deleteItem} handleEditFunction={editItem}/>
+          </Stack>
+          <Stack sx={{width: 400}} spacing={2}>
+            <ParamsForm handleUpdateClick={updateParams} />
+            <FinanceForm handleAddFunction={addItem}/>
+          </Stack>
+        </Stack>
       </main>
     </Context.Provider>
   );

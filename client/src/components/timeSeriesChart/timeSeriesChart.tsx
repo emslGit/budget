@@ -1,7 +1,8 @@
 import React from 'react';
-import { ITimeSeries } from '../../utils/interfaces';
 import { Line } from 'react-chartjs-2';
 import { ChartOptions } from 'chart.js';
+import { ITimeSeries } from '../../utils/interfaces';
+import { primaryColor, primaryColor50 } from '../../utils/colors';
 
 import {
   Chart as ChartJS,
@@ -69,8 +70,8 @@ const TimeSeriesChart: React.FC<IProps> = ({series, startYear, endYear}: IProps)
         fill: true,
         label: 'Net Assets',
         data: series,
-        borderColor: 'rgb(50, 205, 50)',
-        backgroundColor: 'rgba(50, 205, 50, 0.5)',
+        borderColor: primaryColor,
+        backgroundColor: primaryColor50,
       },
     ],
   };
