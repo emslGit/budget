@@ -1,23 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {MobileDatePicker} from '@mui/x-date-pickers/MobileDatePicker';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
-import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import Delete from '@mui/icons-material/Delete';
 import Edit from '@mui/icons-material/Edit';
+import Save from '@mui/icons-material/Save';
+import Cancel from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -75,6 +71,10 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
     }
   }
 
+  const handleCancelClick = () => {
+    setKeyToEdit("");
+  }
+
   return (
     <>
       {items.length && <TableContainer className="card">
@@ -101,20 +101,17 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                       fullWidth
                       size="small"
                       id="name-input"
-                      label="Name"
-                      variant="outlined"
-                      defaultValue={item.itemName}
+                      variant="standard"
+                      defaultValue={itemName}
                       onChange={(e) => setItemName(e.target.value)}
                     />
                   </TableCell>
                   <TableCell>
-                  <FormControl fullWidth size="small">
-                    <InputLabel id="category-select-label">Category</InputLabel>
+                    <FormControl fullWidth size="small">
                       <Select
-                        labelId="category-select-label"
                         id="category-select"
-                        label="Category"
-                        defaultValue={item.category}
+                        variant="standard"
+                        defaultValue={category}
                         onChange={(e) => setCategory(e.target.value as number)}
                       >
                         <MenuItem value={Category.Income}>Income</MenuItem>
@@ -124,12 +121,10 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                   </TableCell>
                   <TableCell>
                     <FormControl fullWidth size="small">
-                      <InputLabel id="frequency-select-label">Frequency</InputLabel>
                       <Select
-                        labelId="frequency-select-label"
+                        variant="standard"
                         id="frequency-select"
-                        label="Frequency"
-                        defaultValue={item.frequency}
+                        defaultValue={frequency}
                         onChange={(e) => setFrequency(e.target.value as number)}
                       >
                         <MenuItem value={Frequency.Once}>Once</MenuItem>
@@ -144,11 +139,10 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                       <DatePicker
                         inputFormat="MMM YYYY"
                         views={['year', 'month']}
-                        label="From"
                         minDate={today}
-                        value={item.dateFrom}
+                        value={dateFrom}
                         onChange={(date) => setDateFrom(date)}
-                        renderInput={(params) => <TextField {...params} fullWidth size="small"/>}
+                        renderInput={(params) => <TextField {...params} fullWidth size="small" variant="standard"/>}
                       />
                     </LocalizationProvider>
                   </TableCell>
@@ -157,11 +151,10 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                       <DatePicker
                         inputFormat="MMM YYYY"
                         views={['year', 'month']}
-                        label="To"
                         minDate={today}
-                        value={item.dateTo}
+                        value={dateTo}
                         onChange={(date) => setDateTo(date)}
-                        renderInput={(params) => <TextField {...params} fullWidth size="small"/>}
+                        renderInput={(params) => <TextField {...params} fullWidth size="small" variant="standard"/>}
                       />
                     </LocalizationProvider>
                   </TableCell>
@@ -170,9 +163,8 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                       fullWidth
                       size="small"
                       id="amount-input"
-                      label="Amount"
-                      variant="outlined"
-                      defaultValue={item.amount}
+                      variant="standard"
+                      defaultValue={amount}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">$</InputAdornment>
@@ -181,6 +173,14 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                       onChange={(e) => setAmount(parseInt(e.target.value))}
                     />
                   </TableCell>
+                  <TableCell align="right">
+                    <IconButton onClick={() => handleEditClick(item)}>
+                      <Save />
+                    </IconButton>
+                    <IconButton onClick={() => handleCancelClick()}>
+                      <Cancel />
+                    </IconButton>
+                  </TableCell>
                 </> || <>
                   <TableCell>{item.itemName}</TableCell>
                   <TableCell>{CATEGORY[item.category]}</TableCell>
@@ -188,15 +188,16 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                   <TableCell>{item.dateFrom?.format('MMM YYYY') || ""}</TableCell>
                   <TableCell>{item.dateTo?.format('MMM YYYY') || ""}</TableCell>
                   <TableCell>{item.category * item.amount}</TableCell>
+                  <TableCell align="right">
+                    <IconButton onClick={() => handleEditClick(item)} disabled={keyToEdit.length != 0}>
+                      <Edit />
+                    </IconButton>
+                    <IconButton onClick={() => handleDeleteClick(item.key)} disabled={keyToEdit.length != 0}>
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
                 </>}
-                <TableCell align="right">
-                  <IconButton onClick={() => handleEditClick(item)}>
-                    <Edit />
-                  </IconButton>
-                  <IconButton onClick={() => handleDeleteClick(item.key)}>
-                    <Delete />
-                  </IconButton>
-                </TableCell>
+
               </TableRow>
             ))}
           </TableBody>
