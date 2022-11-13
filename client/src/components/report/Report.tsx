@@ -45,7 +45,7 @@ const Report: React.FC<IProps> = ({ items, params }: IProps) => {
       <h3>Report</h3>
       <Box paddingX={5}>
         <Slider
-          defaultValue={today.year()}
+          defaultValue={today.year() + 10}
           valueLabelDisplay="auto"
           step={1}
           marks={[

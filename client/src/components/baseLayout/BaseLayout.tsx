@@ -35,8 +35,9 @@ const BaseLayout: React.FC = () => {
     setItems(items.filter(item => item.key != key));
   }
 
-  const editItem = (key: string) => {
-    setItems(items);
+  const editItem = (financeItem: IFinanceItem) => {
+    const filtered = items.filter(item => item.key != financeItem.key)
+    setItems([financeItem, ...filtered]);
   }
 
   const updateParams = (params: IFinanceParams) => {
@@ -46,14 +47,18 @@ const BaseLayout: React.FC = () => {
   return (
     <Context.Provider value={{items: items, params: params}}>
       <main className="baseLayout center">
-        <Stack direction="row" spacing={2}>
-          <Stack sx={{width: 1000}} className="leftColumn">
-            <Report items={items} params={params} />
-            <FinanceTable handleDeleteFunction={deleteItem} handleEditFunction={editItem}/>
+        <Stack direction="column" sx={{width: 1500 }} spacing={2}>
+          <Stack direction="row" spacing={2}>
+            <Stack sx={{width: 1 }}>
+              <Report items={items} params={params} />
+            </Stack>
+            <Stack sx={{width: 675}} spacing={2}>
+              <ParamsForm handleUpdateClick={updateParams} />
+              <FinanceForm handleAddFunction={addItem}/>
+            </Stack>
           </Stack>
-          <Stack sx={{width: 400}} spacing={2}>
-            <ParamsForm handleUpdateClick={updateParams} />
-            <FinanceForm handleAddFunction={addItem}/>
+          <Stack sx={{width: 1}}>
+            <FinanceTable handleDeleteFunction={deleteItem} handleEditFunction={editItem}/>
           </Stack>
         </Stack>
       </main>

@@ -31,3 +31,8 @@ export const FREQUENCY = [
   "Monthly",
   "Annually",
 ]
+
+export const CATEGORY = [
+  "Income",
+  "Expense",
+]
