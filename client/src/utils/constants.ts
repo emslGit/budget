@@ -33,6 +33,6 @@ export const FREQUENCY = [
 ]
 
 export const CATEGORY = [
-  "Income",
   "Expense",
+  "Income",
 ]

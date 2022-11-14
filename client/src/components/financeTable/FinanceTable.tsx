@@ -183,7 +183,7 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                   </TableCell>
                 </> || <>
                   <TableCell>{item.itemName}</TableCell>
-                  <TableCell>{CATEGORY[item.category]}</TableCell>
+                  <TableCell>{(item.category == Category.Income) ? "Income" : "Expense"}</TableCell>
                   <TableCell>{FREQUENCY[item.frequency]}</TableCell>
                   <TableCell>{item.dateFrom?.format('MMM YYYY') || ""}</TableCell>
                   <TableCell>{item.dateTo?.format('MMM YYYY') || ""}</TableCell>

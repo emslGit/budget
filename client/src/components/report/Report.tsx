@@ -13,7 +13,6 @@ interface IProps {
 }
 
 const Report: React.FC<IProps> = ({ items, params }: IProps) => {
-  const annualModifier = 1 + (params.roi - params.inflation) / 100;
   const today = dayjs();
   const [endYear, setEndYear] = useState<number>(today.year() + 10);
 
@@ -58,7 +57,7 @@ const Report: React.FC<IProps> = ({ items, params }: IProps) => {
         ></Slider>
       </Box>
       <TimeSeriesChart
-        series={yearsOnly(dataAsTimeSeries(items, annualModifier, today, endYear))}
+        series={yearsOnly(dataAsTimeSeries(items, params.roi, params.inflation, today, endYear))}
         startYear={today.year()}
         endYear={endYear}
       />
