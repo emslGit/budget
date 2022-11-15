@@ -1,8 +1,9 @@
 .baseLayout {
   padding: 1em;
-  background-color: #111;
   box-sizing: border-box;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
 .baseLayout .wrapper {

@@ -3,15 +3,32 @@ import "./global.css";
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Layout from './components/baseLayout/BaseLayout';
+import BaseLayout from './components/baseLayout/BaseLayout';
 import reportWebVitals from './reportWebVitals';
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+// TODO: move to baselayout? also rename baselayout?
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: 'rgb(50, 205, 50)'
+    }
+  },
+},);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <Layout />
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <BaseLayout />
+    </ThemeProvider>
   </React.StrictMode>
 );
 

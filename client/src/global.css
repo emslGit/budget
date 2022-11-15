@@ -1,65 +1,16 @@
-body {
-  font-family: sans-serif;
-  color: whitesmoke;
-}
-
 /** global element styling **/
-h1 {
-  text-align: center;
-}
-
-hr {
-  color: lightgrey;
-  margin: 1em 0;
-}
-
-button {
-  padding: 0.25em 2em;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 2px;
-  transition: 150ms;
-}
-
-button:hover {
-  background-color: white;
-  color: black;
-}
-
-input[type=text],
-input[type=number] {
-  width: 8em;
-}
-
-input.yearInput[type=number] {
-  width: 4em;
+h3 {
+  height: 1rem;
+  margin: 1rem 0 1rem 0.2rem;
+  font-weight: normal;
+  color: lightgrey
 }
 
 /** layout classes **/
-.center {
-  display: flex;
-  justify-content: center;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-}
-
-.wrap {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .card {
   padding: 1em;
   margin: 1em auto;
   border-radius: 3px;
+  min-width: 720px;
   background-color: #161616;
 }

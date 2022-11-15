@@ -1,47 +1,64 @@
-import React, { useRef } from 'react';
-import { strings } from '../../utils/strings';
+import React, { useState } from 'react';
+import Button from '@mui/material/Button';
+import InputAdornment from '@mui/material/InputAdornment';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import { IFinanceParams } from '../../utils/interfaces';
-import './paramsForm.css';
 
 interface Props {
   handleUpdateClick(params: IFinanceParams): void;
 }
 
+const defaultRoi: number = 12;
+const defaultInflation: number = 2;
+
 const ParamsForm: React.FC<Props> = ({handleUpdateClick}: Props) => {
-  const roiInput = useRef<HTMLInputElement>(null);
-  const inflationInput = useRef<HTMLInputElement>(null);
+  const [roi, setRoi] = useState<number>(defaultRoi);
+  const [inflation, setInflation] = useState<number>(defaultInflation);
 
-  const handleFormSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
-    ev.preventDefault();
-
+  const handleSubmit = () => {
     handleUpdateClick({
-      roi: roiInput.current ? Number(roiInput.current.value) : 0,
-      inflation: inflationInput.current ? Number(inflationInput.current.value) : 0
+      roi: roi || 0,
+      inflation: inflation || 0
     });
   }
 
+  // TODO: validate number inputs (all forms, 3 files)
   return (
-    <div className={`paramsForm card`}>
-      <h2>Parameters</h2>
-      <form onSubmit={(ev) => handleFormSubmit(ev)}>
-        <div>
-          <label>{strings.roi}</label>
-          <span>
-            <input ref={roiInput} defaultValue={12} type="number"></input>
-            <span>%</span>
-          </span>
-        </div>
-        <div>
-          <label>{strings.inflation}</label>
-          <span>
-            <input ref={inflationInput} defaultValue={2} type="number"></input>
-            <span>%</span>
-          </span>
-        </div>
-        <hr></hr>
-        <button>Update</button>
-      </form>
-    </div>
+    <Stack className="paramsForm card" spacing={3}>
+      <h3>Parameters</h3>
+      <Stack direction="row" spacing={2}>
+        <TextField
+          fullWidth
+          id="roi-input"
+          label="Roi"
+          variant="outlined"
+          defaultValue={roi}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">%</InputAdornment>
+            ),
+          }}
+          onChange={(e) => setRoi(parseInt(e.target.value))}
+        />
+        <TextField
+          fullWidth
+          id="inflation-input"
+          label="Inflation"
+          variant="outlined"
+          defaultValue={inflation}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">%</InputAdornment>
+            ),
+          }}
+          onChange={(e) => setInflation(parseInt(e.target.value))}
+        />
+      </Stack>
+      <Button variant="contained" onClick={() => handleSubmit()}>
+        Update
+      </Button>
+    </Stack>
   );
 }
 

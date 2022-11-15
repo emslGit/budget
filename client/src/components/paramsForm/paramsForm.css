@@ -1,8 +1,0 @@
-.paramsForm form>div {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 320px;
-  padding: 0.5em 1em;
-}

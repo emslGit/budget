@@ -2,7 +2,6 @@ import React from 'react';
 import { ITimeSeries } from '../../utils/interfaces';
 import { Line } from 'react-chartjs-2';
 import { ChartOptions } from 'chart.js';
-import './timeSeries.css';
 
 import {
   Chart as ChartJS,
@@ -52,15 +51,17 @@ const TimeSeriesChart: React.FC<IProps> = ({series, startYear, endYear}: IProps)
       x: {
         ticks: {
           autoSkip: false,
-          callback(val: string | number, index: number): string {
-            const label = this.getLabelForValue(Number(val));
-            return label.includes("Jan") ? label : '';
-          },
+          // TODO: decide if we should go with years only
+          // callback(val: string | number, index: number): string {
+          //   const label = this.getLabelForValue(Number(val));
+          //   return label.includes("Jan") ? label : '';
+          // },
         }
       }
     }
   };
 
+  // TODO: variables for the colors
   const data = {
     series,
     datasets: [
@@ -68,8 +69,8 @@ const TimeSeriesChart: React.FC<IProps> = ({series, startYear, endYear}: IProps)
         fill: true,
         label: 'Net Assets',
         data: series,
-        borderColor: 'rgb(53, 235, 162)',
-        backgroundColor: 'rgba(53, 235, 162, 0.5)',
+        borderColor: 'rgb(50, 205, 50)',
+        backgroundColor: 'rgba(50, 205, 50, 0.5)',
       },
     ],
   };
