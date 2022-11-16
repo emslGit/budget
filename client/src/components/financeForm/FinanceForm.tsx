@@ -2,37 +2,27 @@ import React, { useContext, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 
-import Delete from '@mui/icons-material/Delete';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {MobileDatePicker} from '@mui/x-date-pickers/MobileDatePicker';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
-import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableFooter from '@mui/material/TableFooter';
-import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import {Context} from "../baseLayout/BaseLayout"
-import {FREQUENCY, Frequency, Category} from '../../utils/constants';
+import {Frequency, Category} from '../../utils/constants';
 import {IFinanceItem} from "../../utils/interfaces";
 
 interface IProps {
   handleAddFunction(financeItem: IFinanceItem): void;
-  handleDeleteFunction(key: string): void;
 }
 
 const defaultFinanceItem: IFinanceItem = {
@@ -45,7 +35,7 @@ const defaultFinanceItem: IFinanceItem = {
   dateTo: null,
 }
 
-const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}: IProps) => {
+const FinanceForm: React.FC<IProps> = ({handleAddFunction}: IProps) => {
   const {items} = useContext(Context);
   const [itemName, setItemName] = useState<string>(defaultFinanceItem.itemName);
   const [amount, setAmount] = useState<number>(defaultFinanceItem.amount);
@@ -72,14 +62,12 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
     });
   }
 
-  const handleDeleteClick = (key: string) => {
-    handleDeleteFunction(key);
-  }
-
   return (
     <Stack className="financeForm card" spacing={3}>
       <h3>Add Income or Expense</h3>
       <TextField
+        fullWidth
+        size="small"
         id="name-input"
         label="Name"
         variant="outlined"
@@ -87,6 +75,8 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
         onChange={(e) => setItemName(e.target.value)}
       />
       <TextField
+        fullWidth
+        size="small"
         id="amount-input"
         label="Amount"
         variant="outlined"
@@ -99,16 +89,16 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
         onChange={(e) => setAmount(parseInt(e.target.value))}
       />
       <ToggleButtonGroup
+        size="small"
         fullWidth
-        color="primary"
         value={category}
         exclusive
         onChange={(e) => setCategory(parseInt((e.target as HTMLButtonElement).value))}
       >
-        <ToggleButton value={Category.Income}>Income</ToggleButton>
-        <ToggleButton value={Category.Expense}>Expense</ToggleButton>
+        <ToggleButton color="primary" value={Category.Income}>Income</ToggleButton>
+        <ToggleButton color="secondary" value={Category.Expense}>Expense</ToggleButton>
       </ToggleButtonGroup>
-      <FormControl fullWidth>
+      <FormControl fullWidth size="small">
         <InputLabel id="frequency-select-label">Frequency</InputLabel>
         <Select
           labelId="frequency-select-label"
@@ -125,79 +115,29 @@ const FinanceForm: React.FC<IProps> = ({handleAddFunction, handleDeleteFunction}
       </FormControl>
       <Stack direction="row" spacing={2}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <MobileDatePicker
+          <DatePicker
             inputFormat="MMM YYYY"
             views={['year', 'month']}
             label="From"
             minDate={today}
             value={dateFrom}
             onChange={(date) => setDateFrom(date)}
-            renderInput={(params) => <TextField {...params} fullWidth/>}
+            renderInput={(params) => <TextField {...params} fullWidth size="small"/>}
           />
-          <MobileDatePicker
+          <DatePicker
             inputFormat="MMM YYYY"
             views={['year', 'month']}
             label="To"
             minDate={today}
             value={dateTo}
             onChange={(date) => setDateTo(date)}
-            renderInput={(params) => <TextField {...params} fullWidth/>}
+            renderInput={(params) => <TextField {...params} fullWidth size="small"/>}
           />
         </LocalizationProvider>
       </Stack>
-      <Button variant="contained" onClick={() => handleSubmit()}>
+      <Button fullWidth variant="contained" onClick={() => handleSubmit()}>
         Add
       </Button>
-      {/* TODO: abstract table */}
-      {items.length && <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Frequency</TableCell>
-              <TableCell>From</TableCell>
-              <TableCell>To</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell align="right"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {items.map((item: IFinanceItem) => (
-              <TableRow key={item.key}>
-                <TableCell>{item.itemName}</TableCell>
-                <TableCell>{FREQUENCY[item.frequency]}</TableCell>
-                <TableCell>{item.dateFrom?.format('MMM YYYY') || ""}</TableCell>
-                <TableCell>{item.dateTo?.format('MMM YYYY') || ""}</TableCell>
-                <TableCell>{item.category * item.amount}</TableCell>
-                <TableCell align="right">
-                  <IconButton onClick={() => handleDeleteClick(item.key)}>
-                    <Delete />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 }}}>
-              <TableCell colSpan={4}>Net Annual Change</TableCell>
-              <TableCell>
-                {/* TODO: abstract acc */}
-                {items.reduce((sum, item) => {
-                  const multiplied = (item.category === Category.Expense ? -1 : 1) * item.amount;
-                  switch(item.frequency) {
-                    case 0:
-                      return 52 * multiplied + sum;
-                    case 1:
-                      return 12 * multiplied + sum;
-                    default:
-                      return multiplied + sum;
-                  } 
-                }, 0)}
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer> || ""}
     </Stack>
   );
 }

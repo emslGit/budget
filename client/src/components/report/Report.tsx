@@ -13,9 +13,8 @@ interface IProps {
 }
 
 const Report: React.FC<IProps> = ({ items, params }: IProps) => {
-  const annualModifier = 1 + (params.roi - params.inflation) / 100;
   const today = dayjs();
-  const [endYear, setEndYear] = useState<number>(today.year() + 5);
+  const [endYear, setEndYear] = useState<number>(today.year() + 10);
 
   const yearsOnly = (timeSeries: ITimeSeries): ITimeSeries => {
     let _timeSeries: ITimeSeries = {};
@@ -45,7 +44,7 @@ const Report: React.FC<IProps> = ({ items, params }: IProps) => {
       <h3>Report</h3>
       <Box paddingX={5}>
         <Slider
-          defaultValue={today.year()}
+          defaultValue={today.year() + 10}
           valueLabelDisplay="auto"
           step={1}
           marks={[
@@ -58,7 +57,7 @@ const Report: React.FC<IProps> = ({ items, params }: IProps) => {
         ></Slider>
       </Box>
       <TimeSeriesChart
-        series={yearsOnly(dataAsTimeSeries(items, annualModifier, today, endYear))}
+        series={yearsOnly(dataAsTimeSeries(items, params.roi, params.inflation, today, endYear))}
         startYear={today.year()}
         endYear={endYear}
       />

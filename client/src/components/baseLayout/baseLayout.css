@@ -1,11 +1,8 @@
 .baseLayout {
-  padding: 1em;
+  padding: 2rem;
   box-sizing: border-box;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
-}
-
-.baseLayout .wrapper {
-  max-width: 1000px;
+  flex-direction: column;
+  align-items: center;
 }

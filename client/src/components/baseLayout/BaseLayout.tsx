@@ -4,6 +4,8 @@ import ParamsForm from '../paramsForm/ParamsForm';
 import Report from '../report/Report';
 import { IFinanceItem, IFinanceParams } from '../../utils/interfaces';
 import './baseLayout.css';
+import FinanceTable from '../financeTable/FinanceTable';
+import { Stack } from '@mui/system';
 
 interface ICtx {
   items: IFinanceItem[];
@@ -33,6 +35,11 @@ const BaseLayout: React.FC = () => {
     setItems(items.filter(item => item.key != key));
   }
 
+  const editItem = (financeItem: IFinanceItem) => {
+    const filtered = items.filter(item => item.key != financeItem.key)
+    setItems([financeItem, ...filtered]);
+  }
+
   const updateParams = (params: IFinanceParams) => {
     setParams(params);
   }
@@ -40,11 +47,20 @@ const BaseLayout: React.FC = () => {
   return (
     <Context.Provider value={{items: items, params: params}}>
       <main className="baseLayout center">
-        <div className="wrapper">
-          <FinanceForm handleAddFunction={addItem} handleDeleteFunction={deleteItem}/>
-          <ParamsForm handleUpdateClick={updateParams} />
-          <Report items={items} params={params} />
-        </div>
+        <Stack direction="column" sx={{width: 1500 }} spacing={2}>
+          <Stack direction="row" spacing={2}>
+            <Stack sx={{width: 1 }}>
+              <Report items={items} params={params} />
+            </Stack>
+            <Stack sx={{width: 675}} spacing={2}>
+              <ParamsForm handleUpdateClick={updateParams} />
+              <FinanceForm handleAddFunction={addItem}/>
+            </Stack>
+          </Stack>
+          <Stack sx={{width: 1}}>
+            <FinanceTable handleDeleteFunction={deleteItem} handleEditFunction={editItem}/>
+          </Stack>
+        </Stack>
       </main>
     </Context.Provider>
   );

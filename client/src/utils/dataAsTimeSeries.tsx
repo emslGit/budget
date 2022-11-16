@@ -4,7 +4,8 @@ import { IFinanceItem, ITimeSeries } from "./interfaces";
 
 const dataAsTimeSeries = (
   items: IFinanceItem[],
-  annualModifier: number,
+  roi: number,
+  inflation: number,
   today: Dayjs,
   endYear: number
 ): ITimeSeries => {
@@ -39,7 +40,7 @@ const dataAsTimeSeries = (
       totalNetArr[`${MONTHS[j]} ${i}`] = Math.round(totalNet);
     }
 
-    totalNet *= annualModifier;
+    totalNet = totalNet * (1 + ((totalNet >= 0) ? (roi - inflation) : inflation)/100);
   }
 
   return totalNetArr;
