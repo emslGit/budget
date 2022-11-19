@@ -1,8 +1,16 @@
 .baseLayout {
-  padding: 2rem;
+  padding: 5rem;
   box-sizing: border-box;
   min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.login {
+  position: absolute;
+  top: 1rem;
+  color: lightgray;
+  right: 1rem;
 }
