@@ -41,14 +41,19 @@ const Report: React.FC<IProps> = ({ items, params }: IProps) => {
   // TODO: consistencies, as number, Number, parseInt
   return (
     <Stack className="report card" spacing={3}>
-      <h3>Report</h3>
-      <Box paddingX={5}>
+      <TimeSeriesChart
+        series={yearsOnly(dataAsTimeSeries(items, params.roi, params.inflation, today, endYear))}
+        startYear={today.year()}
+        endYear={endYear}
+      />
+      <Box paddingX={3} paddingY={1}>
         <Slider
+          size="small"
           defaultValue={today.year() + 10}
           valueLabelDisplay="auto"
           step={1}
           marks={[
-            {value: today.year(), label: today.year()},
+            {value: today.year() + 1, label: today.year()},
             {value: today.year() + 30, label: today.year() + 30}
           ]}
           min={today.year() + 1}
@@ -56,11 +61,6 @@ const Report: React.FC<IProps> = ({ items, params }: IProps) => {
           onChange={(e) => setEndYear(Number((e.target as HTMLInputElement).value))}
         ></Slider>
       </Box>
-      <TimeSeriesChart
-        series={yearsOnly(dataAsTimeSeries(items, params.roi, params.inflation, today, endYear))}
-        startYear={today.year()}
-        endYear={endYear}
-      />
     </Stack>
   );
 };

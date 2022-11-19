@@ -102,7 +102,7 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                       size="small"
                       id="name-input"
                       variant="standard"
-                      defaultValue={itemName}
+                      defaultValue={item.itemName}
                       onChange={(e) => setItemName(e.target.value)}
                     />
                   </TableCell>
@@ -111,7 +111,7 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                       <Select
                         id="category-select"
                         variant="standard"
-                        defaultValue={category}
+                        defaultValue={item.category}
                         onChange={(e) => setCategory(e.target.value as number)}
                       >
                         <MenuItem value={Category.Income}>Income</MenuItem>
@@ -124,7 +124,7 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                       <Select
                         variant="standard"
                         id="frequency-select"
-                        defaultValue={frequency}
+                        defaultValue={item.frequency}
                         onChange={(e) => setFrequency(e.target.value as number)}
                       >
                         <MenuItem value={Frequency.Once}>Once</MenuItem>
@@ -164,7 +164,7 @@ const FinanceTable: React.FC<IProps> = ({handleDeleteFunction, handleEditFunctio
                       size="small"
                       id="amount-input"
                       variant="standard"
-                      defaultValue={amount}
+                      defaultValue={item.amount}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">$</InputAdornment>
